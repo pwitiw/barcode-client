@@ -1,6 +1,8 @@
 package com.frontwit.barcode.restclient.logic.api;
 
+import feign.Param;
 import feign.RequestLine;
+import feign.Response;
 import org.springframework.cloud.netflix.feign.FeignClient;
 
 /**
@@ -9,7 +11,6 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 @FeignClient("barCodeAppClient")
 public interface BarCodeApp {
 
-    @RequestLine("POST /account/{id}")
-    void sendState();
-
+    @RequestLine("POST /barcode/{input}")
+    void sendState(@Param("input") String input);
 }

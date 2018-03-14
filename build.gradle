@@ -20,6 +20,9 @@ sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	flatDir {
+		dirs 'libs'
+	}
 }
 
 
@@ -28,6 +31,7 @@ ext {
 }
 
 dependencies {
+	compile group: 'com.1stleg', name: 'jnativehook', version: '2.1.0'
 	compile('org.springframework.cloud:spring-cloud-starter-feign')
 	compileOnly('org.projectlombok:lombok')
 	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.10.0'

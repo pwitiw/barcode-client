@@ -1,38 +1,34 @@
 package com.frontwit.barcode.restclient.logic.impl;
 
-import lc.kra.system.keyboard.GlobalKeyboardHook;
-
-import java.util.Map.Entry;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
 
 import javax.annotation.PostConstruct;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static com.frontwit.barcode.restclient.common.Messages.REGISTERING_HOOK_ERROR;
 
 public class BarCodeListenerService {
 
-    private static boolean run = true;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    private GlobalKeyboardHook globalKeyboardHook;
+    private KeyboardListener keyboardListener;
 
-    private BarCodeRestClient barCodeRestClient;
-
-    public BarCodeListenerService(GlobalKeyboardHook globalKeyboardHook, BarCodeRestClient barCodeRestClient) {
-        this.globalKeyboardHook = globalKeyboardHook;
-        this.barCodeRestClient = barCodeRestClient;
+    public BarCodeListenerService(KeyboardListener keyboardListener) {
+        this.keyboardListener = keyboardListener;
     }
 
     @PostConstruct
     public void listen() {
-        KeyboardListener keyboardListener = new KeyboardListener();
-        // might throw a UnsatisfiedLinkError if the native library fails to load or a RuntimeException if hooking fails
-        globalKeyboardHook = new GlobalKeyboardHook(false); // use false here to switch to hook instead of raw input
-        for (Entry<Long, String> keyboard : GlobalKeyboardHook.listKeyboards().entrySet()) {
-        }
-        globalKeyboardHook.addKeyListener(keyboardListener);
-
         try {
-            while (run) Thread.sleep(128);
-        } catch (InterruptedException e) { /* nothing to do here */ } finally {
-            globalKeyboardHook.shutdownHook();
+            GlobalScreen.registerNativeHook();
+        } catch (NativeHookException ex) {
+            logger.warning(REGISTERING_HOOK_ERROR + ex.getMessage());
+            System.exit(1);
         }
+        GlobalScreen.addNativeKeyListener(keyboardListener);
+        Logger.getLogger(GlobalScreen.class.getPackage().getName()).setLevel(Level.WARNING);
     }
 
 }
