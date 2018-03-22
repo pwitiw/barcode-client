@@ -47,9 +47,7 @@ public class KeyboardListener implements NativeKeyListener {
     }
 
     private void sendAndClearInput() {
-
         restClient.sendBarCode(input.toString());
-
         input.setLength(0);
     }
 

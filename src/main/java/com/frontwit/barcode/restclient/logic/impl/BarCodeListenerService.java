@@ -20,7 +20,7 @@ public class BarCodeListenerService {
     }
 
     @PostConstruct
-    public void listen() {
+    public void run() {
         try {
             GlobalScreen.registerNativeHook();
         } catch (NativeHookException ex) {
