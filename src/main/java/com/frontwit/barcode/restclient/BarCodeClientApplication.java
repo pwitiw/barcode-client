@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BarCodeRestClientApplication {
+public class BarCodeClientApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BarCodeRestClientApplication.class, args);
+        SpringApplication.run(BarCodeClientApplication.class, args);
     }
 }

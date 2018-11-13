@@ -1,8 +1,7 @@
-package com.frontwit.barcode.restclient.logic.api;
+package com.frontwit.barcode.restclient.barcode.api;
 
 import feign.Param;
 import feign.RequestLine;
-import feign.Response;
 import org.springframework.cloud.netflix.feign.FeignClient;
 
 /**

@@ -1,4 +1,4 @@
-package com.frontwit.barcode.restclient.logic.impl;
+package com.frontwit.barcode.restclient.barcode.impl;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
