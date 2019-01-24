@@ -1,21 +1,17 @@
-package com.frontwit.barcode.restclient.barcode.impl;
+package com.frontwit.barcode.restclient.barcode;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CommandGateway {
 
-    private static final Map<Class<? extends Command>, CommandHandler> handlers = new HashMap<>();
+    private final Map<Class<? extends Command>, CommandHandler> handlers = new HashMap<>();
 
     public CommandHandler register(CommandHandler commandHandler) {
         if (handlers.containsKey(commandHandler.getType())) {
             return handlers.get(commandHandler.getType());
         }
         return handlers.put(commandHandler.getType(), commandHandler);
-    }
-
-    public CommandHandler unregister(CommandHandler commandHandler) {
-        return handlers.remove(commandHandler.getType());
     }
 
     public void fire(Command command) {

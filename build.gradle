@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.5.10.RELEASE'
+        springBootVersion = '2.1.1.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -13,6 +13,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 group = 'com.frontwit.barcode.restclient'
 version = '0.0.1-SNAPSHOT'
@@ -20,20 +21,17 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    flatDir {
-        dirs 'libs'
-    }
 }
 
 ext {
     jnativehookVersion = "2.1.0"
     log4jVersion = "1.2.17"
-    springCloudVersion = 'Edgware.SR2'
 }
 
 dependencies {
     compile("com.1stleg:jnativehook:${jnativehookVersion}")
-    compile("org.springframework.cloud:spring-cloud-starter-feign")
+    implementation('org.springframework.boot:spring-boot-starter-amqp')
+    implementation('org.springframework.boot:spring-boot-starter-jersey')
     // Logging framework
     compile("log4j:log4j:${log4jVersion}")
     compileOnly("org.projectlombok:lombok")
@@ -41,9 +39,5 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
-}
+
 

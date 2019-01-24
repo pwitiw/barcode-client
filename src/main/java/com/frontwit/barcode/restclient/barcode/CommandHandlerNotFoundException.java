@@ -1,4 +1,6 @@
-package com.frontwit.barcode.restclient.barcode.impl;
+package com.frontwit.barcode.restclient.barcode;
+
+import com.frontwit.barcode.restclient.barcode.Command;
 
 public class CommandHandlerNotFoundException extends RuntimeException {
 

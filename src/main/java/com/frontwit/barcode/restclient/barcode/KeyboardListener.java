@@ -1,4 +1,4 @@
-package com.frontwit.barcode.restclient.barcode.impl;
+package com.frontwit.barcode.restclient.barcode;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
@@ -23,10 +23,11 @@ public class KeyboardListener implements NativeKeyListener {
         this.commandGateway = commandGateway;
     }
 
+    @Override
     public void nativeKeyPressed(NativeKeyEvent event) {
         if (isNumber(event)) {
             input.append(NativeKeyEvent.getKeyText(event.getKeyCode()));
-        } else if (isEnter(event)) {
+        } else if (isEnter(event) && !input.toString().isEmpty()) {
             commandGateway.fire(new BarcodeCommand(0, Long.valueOf(input.toString())));
             input.setLength(0);
         } else if (isExit(event)) {
@@ -34,11 +35,13 @@ public class KeyboardListener implements NativeKeyListener {
         }
     }
 
-    public void nativeKeyReleased(NativeKeyEvent e) {
+    @Override
+    public void nativeKeyReleased(NativeKeyEvent event) {
         // do nothing
+
     }
 
-    public void nativeKeyTyped(NativeKeyEvent e) {
+    public void nativeKeyTyped(NativeKeyEvent event) {
         // do nothing
     }
 

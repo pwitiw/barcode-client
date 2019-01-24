@@ -1,4 +1,4 @@
-package com.frontwit.barcode.restclient.barcode.impl;
+package com.frontwit.barcode.restclient.barcode;
 
 import java.util.Collection;
 
@@ -10,5 +10,4 @@ public interface BarcodeCommandDao {
     Collection<BarcodeCommand> findAll();
 
     void clear();
-
 }

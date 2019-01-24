@@ -1,6 +1,5 @@
-package com.frontwit.barcode.restclient.barcode.impl;
+package com.frontwit.barcode.restclient.barcode;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.TaskScheduler;
 
@@ -15,21 +14,25 @@ import static com.frontwit.barcode.restclient.common.Messages.TASK_EXECUTED_SUCC
 
 public class BarcodeHandler implements CommandHandler<BarcodeCommand> {
 
-    private static final Logger LOGGER = Logger.getLogger(BarcodeCommand.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BarcodeHandler.class.getName());
 
     @Value("${task-execution-delay}")
     private Integer executionDelay;
 
-    @Autowired
-    private BarCodeRestClient rest;
+    private BarcodeRestClient rest;
 
-    @Autowired
     private BarcodeCommandDao barcodeCommandDao;
 
-    @Autowired
     private TaskScheduler scheduler;
 
     private ScheduledFuture<?> task;
+
+
+    public BarcodeHandler(BarcodeRestClient rest, BarcodeCommandDao barcodeCommandDao, TaskScheduler scheduler) {
+        this.rest = rest;
+        this.barcodeCommandDao = barcodeCommandDao;
+        this.scheduler = scheduler;
+    }
 
     @Override
     public Class<BarcodeCommand> getType() {
@@ -52,7 +55,8 @@ public class BarcodeHandler implements CommandHandler<BarcodeCommand> {
         if (rest.sendBarCode(barcodeCommands)) {
             LOGGER.info(String.format(TASK_EXECUTED_SUCCESSFULLY, barcodeCommands.size()));
             barcodeCommandDao.clear();
+        } else {
+            LOGGER.info(String.format(TASK_EXECUTED_NOT_SUCCESSFULLY));
         }
-        LOGGER.info(String.format(TASK_EXECUTED_NOT_SUCCESSFULLY));
     }
 }

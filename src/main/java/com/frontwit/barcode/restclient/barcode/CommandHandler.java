@@ -1,4 +1,4 @@
-package com.frontwit.barcode.restclient.barcode.impl;
+package com.frontwit.barcode.restclient.barcode;
 
 public interface CommandHandler<T extends Command> {
 

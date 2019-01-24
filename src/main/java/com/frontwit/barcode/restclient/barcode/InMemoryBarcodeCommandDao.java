@@ -1,5 +1,6 @@
-package com.frontwit.barcode.restclient.barcode.impl;
+package com.frontwit.barcode.restclient.barcode;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +17,7 @@ public class InMemoryBarcodeCommandDao implements BarcodeCommandDao {
 
     @Override
     public Collection<BarcodeCommand> findAll() {
-        return commands;
+        return new ArrayList<>(commands);
     }
 
     @Override

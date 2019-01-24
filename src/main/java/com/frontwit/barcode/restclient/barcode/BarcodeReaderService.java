@@ -1,7 +1,8 @@
-package com.frontwit.barcode.restclient.barcode.impl;
+package com.frontwit.barcode.restclient.barcode;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.logging.Level;
@@ -9,13 +10,14 @@ import java.util.logging.Logger;
 
 import static com.frontwit.barcode.restclient.common.Messages.REGISTERING_HOOK_ERROR;
 
-public class BarCodeListenerService {
+@Service
+public class BarcodeReaderService {
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     private KeyboardListener keyboardListener;
 
-    public BarCodeListenerService(KeyboardListener keyboardListener) {
+    public BarcodeReaderService(KeyboardListener keyboardListener) {
         this.keyboardListener = keyboardListener;
     }
 
