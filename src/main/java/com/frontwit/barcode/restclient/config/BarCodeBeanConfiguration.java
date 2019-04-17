@@ -1,7 +1,7 @@
 package com.frontwit.barcode.restclient.config;
 
 import com.frontwit.barcode.restclient.barcode.*;
-import com.frontwit.barcode.restclient.barcode.KeyboardListener;
+import com.frontwit.barcode.restclient.barcode.storage.BarcodeStorage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
@@ -23,9 +23,9 @@ public class BarCodeBeanConfiguration {
     }
 
     @Bean
-    public BarcodeHandler barcodeHandler(BarcodeRestClient barcodeRestClient, BarcodeCommandDao barcodeCommandDao,
+    public BarcodeHandler barcodeHandler(BarcodeRestClient barcodeRestClient, BarcodeStorage barcodeStorage,
                                          TaskScheduler taskScheduler) {
-        return new BarcodeHandler(barcodeRestClient, barcodeCommandDao, taskScheduler);
+        return new BarcodeHandler(barcodeRestClient, barcodeStorage, taskScheduler);
     }
 
     @Bean
@@ -34,19 +34,9 @@ public class BarCodeBeanConfiguration {
     }
 
     @Bean
-    public BarcodeReaderService barCodeListenerService(KeyboardListener keyboardListener) {
-        return new BarcodeReaderService(keyboardListener);
-    }
-
-    @Bean
     public TaskScheduler threadPoolTaskScheduler() {
         ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
         threadPoolTaskScheduler.setThreadNamePrefix("Scheduler");
         return threadPoolTaskScheduler;
-    }
-
-    @Bean
-    public BarcodeCommandDao barcodeCommandDao() {
-        return new InMemoryBarcodeCommandDao();
     }
 }

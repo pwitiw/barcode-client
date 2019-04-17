@@ -12,7 +12,6 @@ import static com.frontwit.barcode.restclient.common.Messages.REGISTERING_HOOK_E
 
 @Service
 public class BarcodeReaderService {
-
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     private KeyboardListener keyboardListener;

@@ -1,5 +1,6 @@
 package com.frontwit.barcode.restclient.barcode;
 
+import com.frontwit.barcode.restclient.barcode.storage.BarcodeStorage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.TaskScheduler;
 
@@ -21,16 +22,16 @@ public class BarcodeHandler implements CommandHandler<BarcodeCommand> {
 
     private BarcodeRestClient rest;
 
-    private BarcodeCommandDao barcodeCommandDao;
+    private BarcodeStorage barcodeStorage;
 
     private TaskScheduler scheduler;
 
     private ScheduledFuture<?> task;
 
 
-    public BarcodeHandler(BarcodeRestClient rest, BarcodeCommandDao barcodeCommandDao, TaskScheduler scheduler) {
+    public BarcodeHandler(BarcodeRestClient rest, BarcodeStorage barcodeStorage, TaskScheduler scheduler) {
         this.rest = rest;
-        this.barcodeCommandDao = barcodeCommandDao;
+        this.barcodeStorage = barcodeStorage;
         this.scheduler = scheduler;
     }
 
@@ -41,7 +42,7 @@ public class BarcodeHandler implements CommandHandler<BarcodeCommand> {
 
     @Override
     public void handle(BarcodeCommand command) {
-        barcodeCommandDao.save(command);
+        barcodeStorage.save(command);
         LOGGER.info(String.format("Persisted %s", command));
         if (task == null || task.isDone()) {
             Long scheduledTime = Instant.now().toEpochMilli() + executionDelay;
@@ -51,10 +52,10 @@ public class BarcodeHandler implements CommandHandler<BarcodeCommand> {
     }
 
     private void executeTask() {
-        Collection<BarcodeCommand> barcodeCommands = barcodeCommandDao.findAll();
+        Collection<BarcodeCommand> barcodeCommands = barcodeStorage.findAll();
         if (rest.sendBarCode(barcodeCommands)) {
             LOGGER.info(String.format(TASK_EXECUTED_SUCCESSFULLY, barcodeCommands.size()));
-            barcodeCommandDao.clear();
+            barcodeStorage.delete(barcodeCommands);
         } else {
             LOGGER.info(String.format(TASK_EXECUTED_NOT_SUCCESSFULLY));
         }

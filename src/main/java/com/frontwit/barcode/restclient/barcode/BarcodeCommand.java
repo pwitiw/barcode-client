@@ -1,18 +1,24 @@
 package com.frontwit.barcode.restclient.barcode;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class BarcodeCommand implements Command {
 
+    private Long id;
     private final Integer readerId;
     private final Long barcode;
-    private final LocalTime date;
+    private final LocalDateTime date;
 
     public BarcodeCommand(Integer readerId, Long barcode) {
+        this(null, readerId, barcode, LocalDateTime.now());
+    }
+
+    public BarcodeCommand(Long id, Integer readerId, Long barcode, LocalDateTime date) {
+        this.id = id;
         this.readerId = readerId;
         this.barcode = barcode;
-        this.date = LocalTime.now();
+        this.date = date;
     }
 
     public Integer getReaderId() {
@@ -21,6 +27,10 @@ public class BarcodeCommand implements Command {
 
     public Long getBarcode() {
         return barcode;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override

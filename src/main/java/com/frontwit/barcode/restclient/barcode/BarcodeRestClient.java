@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 import javax.annotation.PostConstruct;
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -36,9 +37,15 @@ public class BarcodeRestClient {
         WebTarget barcodeWebTarget = webTarget.path("barcode");
         Invocation.Builder invocationBuilder = barcodeWebTarget.request();
         invocationBuilder.header(HttpHeaders.AUTHORIZATION, TOKEN);
-        Response response = invocationBuilder.post(Entity.entity(barcodeCommands, MediaType.APPLICATION_JSON));
-        LOGGER.info(format(SERVER_RESPONSE, response.getStatus()));
-        return response.getStatus() == HttpStatus.OK.value();
+        try {
+
+            Response response = invocationBuilder.post(Entity.entity(barcodeCommands, MediaType.APPLICATION_JSON));
+            LOGGER.info(format(SERVER_RESPONSE, response.getStatus()));
+            return response.getStatus() == HttpStatus.OK.value();
+        } catch (ProcessingException ex) {
+            LOGGER.warning(ex.getMessage());
+        }
+        return false;
     }
 }
 
